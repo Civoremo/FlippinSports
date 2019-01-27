@@ -4,6 +4,10 @@ export const FETCH_NBA_TEAM_INFO_START = "FETCH_NBA_TEAM_INFO_START";
 export const FETCH_NBA_TEAM_INFO_SUCCESS = "FETCH_NBA_TEAM_INFO_SUCCESS";
 export const FETCH_NBA_TEAM_INFO_FAILURE = "FETCH_NBA_TEAM_INFO_FAILURE";
 
+export const FETCH_TEAMROSTER_START = 'FETCH_TEAMROSTER_START';
+export const FETCH_TEAMROSTER_SUCCESS = 'FETCH_TEAMROSTER_SUCCESS';
+export const FETCH_TEAMROSTER_FAILURE = 'FETCH_TEAMROSTER_FAILURE';
+
 const baseURL = "https://stats.nba.com/stats";
 
 const teamIDs = [
@@ -38,6 +42,26 @@ const teamIDs = [
     1610612762,
     1610612764,
 ];
+
+export const fetchTeamroster = id => dispatch => {
+    dispatch({ type: FETCH_TEAMROSTER_START });
+    axios({
+        method: 'get',
+        url: 'https://stats.nba.com/stats/commonteamroster',
+        data: {
+            Season: '2018-19',
+            TeamID: `${id}`,
+        }
+    }).then(roster => {
+        console.log(roster);
+        dispatch({
+            type: FETCH_TEAMROSTER_SUCCESS,
+            // payload: roster.data,
+        })
+    }).catch(err => {
+        dispatch({type: FETCH_TEAMROSTER_FAILURE });
+    });
+}
 
 export const fetchNBATeamInfo = id => dispatch => {
     dispatch({ type: FETCH_NBA_TEAM_INFO_START });
